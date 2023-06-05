@@ -1,4 +1,6 @@
-﻿namespace Assignment;
+﻿using static Pack;
+
+namespace Assignment;
 
 static class PackTester
 {
@@ -17,27 +19,35 @@ static class PackTester
             Console.WriteLine("5 - Food");
             Console.WriteLine("6 - Sword");
             Console.WriteLine("7 - Gather your pack and venture forth");
-
             try
             {
                 // int.TryParse should be preferred
                 // I am using this method to demonstrate exception handling
                 int choice = Convert.ToInt32(Console.ReadLine());
                 // Can use _ -> for a default case to possibly avoid exception handling
-                InventoryItem newItem = choice switch
-                {
-                    1 => new Arrow(),
-                    2 => new Bow(),
-                    3 => new Rope(),
-                    4 => new Water(),
-                    5 => new Food(),
-                    6 => new Sword()
-                };
-                if (!pack.Add(newItem))
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Could not fit this item into the pack.");
-                }
+            
+                    InventoryItem? newItem = choice switch
+                    {
+                        1 => new Arrow(),
+                        2 => new Bow(),
+                        3 => new Rope(),
+                        4 => new Water(),
+                        5 => new Food(),
+                        6 => new Sword(),
+                        7 => null,
+                        _ => throw new InvalidOperationException("Wrong choice")
+                    };
+
+                    if (newItem != null)
+                    {
+                        if (!pack.Add(newItem))
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("Could not fit this item into the pack.");
+                        }
+                    }
+
+                
             }
             catch (FormatException)
             {
